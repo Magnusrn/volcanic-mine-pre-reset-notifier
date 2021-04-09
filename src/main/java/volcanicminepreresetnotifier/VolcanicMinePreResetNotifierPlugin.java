@@ -15,7 +15,7 @@ import net.runelite.client.Notifier;
 @PluginDescriptor(
 		name = "Volcanic Mine pre-reset notifier",
 		description = "Notifies on stability change 6 mins or prior for A role and B/C role",
-		tags = {"Vent", "Mine", "Volcanic", "VM", "kitsch"}
+		tags = {"vent", "mine", "volcanic", "vm", "kitsch"}
 )
 public class VolcanicMinePreResetNotifierPlugin extends Plugin
 {
