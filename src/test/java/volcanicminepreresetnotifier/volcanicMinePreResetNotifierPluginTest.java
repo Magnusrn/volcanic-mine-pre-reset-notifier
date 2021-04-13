@@ -3,11 +3,11 @@ package volcanicminepreresetnotifier;
 import net.runelite.client.RuneLite;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 
-public class VolcanicMinePreResetNotifierPluginTest
+public class volcanicMinePreResetNotifierPluginTest
 {
 	public static void main(String[] args) throws Exception
 	{
-		ExternalPluginManager.loadBuiltin(VolcanicMinePreResetNotifierPlugin.class);
+		ExternalPluginManager.loadBuiltin(volcanicMinePreResetNotifierPlugin.class);
 		RuneLite.main(args);
 	}
 }
