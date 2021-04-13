@@ -22,7 +22,7 @@ import net.runelite.client.events.ConfigChanged;
         description = "Notifies on stability change 6 mins or prior for A role and B/C role and counts total number of caps",
         tags = {"vent", "mine", "volcanic", "vm", "kitsch", "cap",}
 )
-public class volcanicMinePreResetNotifierPlugin extends Plugin
+public class VolcanicMinePreResetNotifierPlugin extends Plugin
 {
     private static final int VARBIT_STABILITY = 5938;
     private static final int VARBIT_TIME_REMAINING =5944;
@@ -36,16 +36,16 @@ public class volcanicMinePreResetNotifierPlugin extends Plugin
     public static int capCount = 0 ;
     private int compareScore = 0;
     private int lastAnimationID = 0;
-    private volcanicMinePreResetNotifierInfoBox VMIB;
+    private VolcanicMinePreResetNotifierInfoBox VMIB;
 
     @Provides
-    volcanicMinePreResetNotifierConfig provideConfig(ConfigManager configManager)
+    VolcanicMinePreResetNotifierConfig provideConfig(ConfigManager configManager)
     {
-        return configManager.getConfig(volcanicMinePreResetNotifierConfig.class);
+        return configManager.getConfig(VolcanicMinePreResetNotifierConfig.class);
     }
 
     @Inject
-    private volcanicMinePreResetNotifierConfig config;
+    private VolcanicMinePreResetNotifierConfig config;
 
     @Inject
     private Notifier notifier;
@@ -81,7 +81,7 @@ public class volcanicMinePreResetNotifierPlugin extends Plugin
                     this.VMIB = null;
 
                 }
-                this.VMIB = new volcanicMinePreResetNotifierInfoBox(this.client, this);
+                this.VMIB = new VolcanicMinePreResetNotifierInfoBox(this.client, this);
                 capCount += 1;
                 this.infoBoxManager.addInfoBox(this.VMIB);
             }

@@ -5,7 +5,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("vmGroup")
-public interface volcanicMinePreResetNotifierConfig extends Config
+public interface VolcanicMinePreResetNotifierConfig extends Config
 {
     @ConfigItem(
             position = 1,
