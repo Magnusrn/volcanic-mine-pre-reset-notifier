@@ -3,8 +3,10 @@ import javax.inject.Inject;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
@@ -28,14 +30,9 @@ public class VolcanicMinePreResetNotifierPlugin extends Plugin
     private static final int VARBIT_TIME_REMAINING =5944;
     private static final int VM_REGION_NORTH = 15263;
     private static final int VM_REGION_SOUTH = 15262;
-    private static final int BLOCKING_ANIMATION = 832;
-    private static final int MINING_ANIMATION = 8347;
-    private static final int VARBIT_POINTS = 5934;
     private boolean Notification_Triggered = false;
     private int Stability_Reached_100 = 0;
     public static int capCount = 0 ;
-    private int compareScore = 0;
-    private int lastAnimationID = 0;
     private VolcanicMinePreResetNotifierInfoBox VMIB;
 
     @Provides
@@ -71,21 +68,26 @@ public class VolcanicMinePreResetNotifierPlugin extends Plugin
                 }
             }
         }
+    }
+
+    @Subscribe
+    public void onChatMessage(ChatMessage event)
+    {
         if (config.capCounter())
         {
-            if(this.client.getVarbitValue(VARBIT_POINTS) -compareScore ==50 && (lastAnimationID == BLOCKING_ANIMATION || lastAnimationID == MINING_ANIMATION))
-            {
-                if (this.VMIB != null)
-                {
-                    this.infoBoxManager.removeInfoBox(this.VMIB);
-                    this.VMIB = null;
-
+            if (event.getType() == ChatMessageType.GAMEMESSAGE) {
+                if (event.getMessage().equals("You manage to clear the blockage.") || event.getMessage().equals("You block the chamber with the large rock. The gas starts to build up.")) {
+                    if (capCount < 6) {
+                        if (this.VMIB != null) {
+                            this.infoBoxManager.removeInfoBox(this.VMIB);
+                            this.VMIB = null;
+                        }
+                        this.VMIB = new VolcanicMinePreResetNotifierInfoBox(this.client, this);
+                        capCount++;
+                        this.infoBoxManager.addInfoBox(this.VMIB);
+                    }
                 }
-                this.VMIB = new VolcanicMinePreResetNotifierInfoBox(this.client, this);
-                capCount += 1;
-                this.infoBoxManager.addInfoBox(this.VMIB);
             }
-            compareScore = this.client.getVarbitValue(VARBIT_POINTS);
         }
     }
 
@@ -117,20 +119,13 @@ public class VolcanicMinePreResetNotifierPlugin extends Plugin
             reset();
             return;
         }
-
-        if (client.getLocalPlayer().getAnimation()!=-1)
-        {
-            lastAnimationID = client.getLocalPlayer().getAnimation();
-        }
     }
 
     private void reset()
     {
         Notification_Triggered = false;
         Stability_Reached_100 = 0;
-        lastAnimationID=0;
         capCount=0;
-        compareScore=0;
         this.infoBoxManager.removeInfoBox(this.VMIB);
         this.VMIB = null;
     }
